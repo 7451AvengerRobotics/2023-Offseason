@@ -9,6 +9,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
+import java.util.HashMap;
+import edu.wpi.first.wpilibj2.command.Command;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
@@ -144,5 +146,9 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+        public static final HashMap<String, Command> offseasonPath = new HashMap<>();
     }
+    
 }
+

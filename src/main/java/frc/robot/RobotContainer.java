@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
-import frc.robot.constants.AutoConstants;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.AutoConstants;
 import frc.robot.subsystems.*;
 
 /**
