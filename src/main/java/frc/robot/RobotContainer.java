@@ -1,13 +1,6 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -21,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.constants.Constants;
-import frc.robot.constants.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
 
 /**
@@ -48,25 +40,6 @@ public class RobotContainer {
 
     public static HashMap<Command, String> autoMap = new HashMap<>();
 
-    public Command sAutoBuilder(String pathName, HashMap<String, Command> eventMap) {
-        SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-            s_Swerve::getPose, // Pose2d supplier
-            s_Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
-            Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
-            new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-            new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-            s_Swerve::setModuleStates, // Module states consumer used to output to the drive subsystem
-            eventMap,
-            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-            s_Swerve);
-        
-        List<PathPlannerTrajectory> pathToFollow = PathPlanner.loadPathGroup(pathName,
-            PathPlanner.getConstraintsFromPath(pathName));
-        final Command auto = autoBuilder.fullAuto(pathToFollow);
-        autoMap.put(auto, pathName);
-        return auto;
-    }
-
     public static SendableChooser<Command> chooser = new SendableChooser<>();
     
 
@@ -83,23 +56,17 @@ public class RobotContainer {
             )
         );
 
-        setOffseasonPath();
 
         Shuffleboard.getTab("AUTON").add(chooser).withSize(3, 1);
         Command instantCmd = new InstantCommand();
         chooser.setDefaultOption("Nothing", instantCmd);
-        chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
+        // chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
         chooser.addOption("Example Path", new exampleAuto(s_Swerve));
         chooser.addOption("2nd Offseason Path test", new twoElementBumpSide(s_Swerve));
         autoMap.put(instantCmd, "nothing");
 
         // Configure the button bindings
         configureButtonBindings();
-    }
-
-    public void setOffseasonPath() {
-        AutoConstants.offseasonPath.put("Start", new InstantCommand());
-        AutoConstants.offseasonPath.put("Stop", new InstantCommand());
     }
 
     /**

@@ -9,8 +9,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -25,6 +31,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,6 +42,7 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
     private Limelight limelight;
+    public static HashMap<Command, String> autoMap = new HashMap<>();
 
 
     public SwerveDrive() {
@@ -239,7 +247,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public SequentialCommandGroup followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-        PIDController thetaController = new PIDController(1, 0, 0);
+        PIDController thetaController = new PIDController(0.5, 0, 0);
 
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -254,8 +262,8 @@ public class SwerveDrive extends SubsystemBase {
             traj, 
             this::getPose, // Pose supplier
             Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+            new PIDController(0, 0, 0),
+            new PIDController(0, 0, 0),
             thetaController, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
             this::setModuleStates, // Module states consumer
             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
@@ -264,5 +272,24 @@ public class SwerveDrive extends SubsystemBase {
         .andThen(() -> stopDrive())
     );
      }
+
+     public Command sAutoBuilder(String pathName, HashMap<String, Command> eventMap) {
+        SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+            this::getPose, // Pose2d supplier
+            this::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
+            Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
+            new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+            new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+            this::setModuleStates, // Module states consumer used to output to the drive subsystem
+            eventMap,
+            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+            this);
+        
+        List<PathPlannerTrajectory> pathToFollow = PathPlanner.loadPathGroup(pathName,
+            PathPlanner.getConstraintsFromPath(pathName));
+        final Command auto = autoBuilder.fullAuto(pathToFollow);
+        autoMap.put(auto, pathName);
+        return auto;
+    }
 
 }
