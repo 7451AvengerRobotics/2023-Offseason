@@ -90,6 +90,7 @@ public class RobotContainer {
         chooser.setDefaultOption("Nothing", instantCmd);
         chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
         chooser.addOption("Example Path", new exampleAuto(s_Swerve));
+        chooser.addOption("2nd Offseason Path test", new twoElementBumpSide(s_Swerve));
         autoMap.put(instantCmd, "nothing");
 
         // Configure the button bindings
