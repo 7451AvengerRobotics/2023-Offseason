@@ -41,6 +41,8 @@ public class RobotContainer {
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
+    //TODO: Auto Allign will throw an error at the moment if we use it because we cannot determine game piece. We can use controller feedback or we can use other sensors,
+
     /* Subsystems */
     private final SwerveDrive s_Swerve = new SwerveDrive();
 
