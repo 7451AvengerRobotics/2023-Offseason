@@ -2,6 +2,7 @@ package frc.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -15,7 +16,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
-    public static final class Swerve {
+    public static final class FieldCoordinates {
+
+    public static Pose2d BlueOrigin = new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0));
+    public static Pose2d RedOrigin = new Pose2d(new Translation2d(16.5, 8.0), Rotation2d.fromDegrees(180));
+    public static final double[] BLUEcubeYcoord = {1.06, 2.76, 4.45};
+    public static final double[] BLUEconeYcoord = {0.53, 1.62, 2.22, 3.35, 3.87, 4.98};
+    public static final double[] REDcubeYcoord = {3.57, 5.27, 6.94};
+    public static final double[] REDconeYcoord = {3.02, 4.15, 4.71, 5.83, 6.41, 7.52};
+
+    public static final double[] REDsubstationcoord = {1.9, 0.52};
+    public static final double[] BLUEsubstationcoord = {6.2, 7.45};
+
+    }
+    
+    public static final Pose2d REDsubStation = new Pose2d(new Translation2d(15.4, 1.8), Rotation2d.fromDegrees(0));
+    public static final Pose2d BLUEsubStation = new Pose2d(new Translation2d(15.4, 6.2), Rotation2d.fromDegrees(0));
+
+
+    public static final class SwerveConstants {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -150,5 +169,47 @@ public final class Constants {
         public static final HashMap<String, Command> offseasonPath = new HashMap<>();
     }
     
+    public static final class LimelightConstants{
+        public static final String left = "limelight-newleft";
+        public static final String right = "limelight-newrigh";
+        public static final String top = "limelight-vtwotop";
+    }
+
+    public class ButtonConstants {
+        
+        public static final int CONTROLLER_PORT = 0;
+        public static final int BUTTON_PANEL_PORT = 1;
+        /*
+         * Button Panel Mapping
+         * ---------------------------
+         * |          | 11 | 12|     | 
+         * |    ^    | 1 | 2 | 3 | 4 |
+         * |   < >   | 5 | 6 | 7 | 8 |
+         * |    v    | 9 | 10 |      |   
+         * ---------------------------
+         */
+      
+        // All Constants are subject to change once we figure out what each one does in the old code.
+        //12 is not connected so it is 1-11 
+        /* Actual Buttons */
+      
+        public static final int HighCube = 2;
+        public static final int MidCone = 5;
+        public static final int MidCube = 6;
+      
+        public static final int ClawIntake = 3;
+        public static final int ClawOuttake = 4;
+      
+        public static final int TurretLeft = 9;
+        public static final int TurretRight = 10;
+      
+        public static final int Ground = 1;
+        public static final int CLAW_TOGGLE = 8;
+      
+        public static final int ResetEncoder = 11;
+      
+        public static final int lockSolenoid = 7;
+        /* Test Buttons */ 
+      }   
 }
 

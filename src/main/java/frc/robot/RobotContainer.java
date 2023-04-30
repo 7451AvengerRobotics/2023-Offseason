@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,7 +22,7 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.AutoConstants;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Swerve.SwerveDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,20 +31,18 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-
+    private final PS4Controller controller = new PS4Controller(Constants.ButtonConstants.CONTROLLER_PORT) ;
+    private final Joystick buttonPanel = new Joystick(Constants.ButtonConstants.BUTTON_PANEL_PORT);
+    private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
     /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final int translationAxis = PS4Controller.Axis.kLeftY.value;
+    private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
+    private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final SwerveDrive s_Swerve = new SwerveDrive();
 
     public static HashMap<Command, String> autoMap = new HashMap<>();
 
@@ -51,7 +50,7 @@ public class RobotContainer {
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
             s_Swerve::getPose, // Pose2d supplier
             s_Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
-            Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+            Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
             new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
             new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
             s_Swerve::setModuleStates, // Module states consumer used to output to the drive subsystem
@@ -75,9 +74,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> -controller.getRawAxis(translationAxis), 
+                () -> -controller.getRawAxis(strafeAxis), 
+                () -> -controller.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -108,7 +107,6 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     }
 
     /**
