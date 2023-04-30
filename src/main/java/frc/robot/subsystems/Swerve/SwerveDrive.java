@@ -10,7 +10,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,6 +25,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -183,6 +188,11 @@ public class SwerveDrive extends SubsystemBase {
         mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
     }
+
+    public void stopDrive(){
+        drive(new Translation2d(0, 0), 0, false, true);
+    }
+
     public void setYaw(double yaw){
         gyro.setYaw(yaw);
     }
@@ -227,4 +237,32 @@ public class SwerveDrive extends SubsystemBase {
         SmartDashboard.putData("Field Swerve Odom", m_field);
 
     }
+
+    public SequentialCommandGroup followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+        PIDController thetaController = new PIDController(1, 0, 0);
+
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          // Reset odometry for the first path you run during auto
+          if(isFirstPath){
+              this.resetOdometry(traj.getInitialHolonomicPose());
+          }
+        }),
+        new PPSwerveControllerCommand(
+            traj, 
+            this::getPose, // Pose supplier
+            Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+            thetaController, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+            this::setModuleStates, // Module states consumer
+            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+            this // Requires this drive subsystem
+        )
+        .andThen(() -> stopDrive())
+    );
+     }
+
 }
