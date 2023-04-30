@@ -133,7 +133,7 @@ public class Limelight {
     }
 
     poseEst.update(swerve.getYaw(), swerve.getModulePositions());
-    //APose.set(poseEst.getEstimatedPosition());
+    APose.set(poseEst.getEstimatedPosition());
 
     SmartDashboard.putData("Field Pose Est", field2d);
     SmartDashboard.putData("Left CAM Field", leftCam);

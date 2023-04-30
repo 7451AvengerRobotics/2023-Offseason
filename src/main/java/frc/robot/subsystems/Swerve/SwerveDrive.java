@@ -41,7 +41,7 @@ public class SwerveDrive extends SubsystemBase {
         SmartDashboard.putData("Field", m_field);
         gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
         gyro.configFactoryDefault();
-        limelight = new Limelight(this);
+        // limelight = new Limelight(this);
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -222,7 +222,7 @@ public class SwerveDrive extends SubsystemBase {
         }
 
         SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().name());
-        SmartDashboard.putNumber("Swerve Estimated Pos", limelight.getCurrentPose().getY());
+        // SmartDashboard.putNumber("Swerve Estimated Pos", limelight.getCurrentPose().getY());
 
         swerveOdometry.update(getYaw(), getModulePositions()); 
 
