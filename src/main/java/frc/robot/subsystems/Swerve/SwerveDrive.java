@@ -13,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,8 +23,6 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -49,7 +46,6 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
     private Limelight limelight;
-    private AprilTagFieldLayout layout;
     public static HashMap<Command, String> autoMap = new HashMap<>();
 
 
@@ -73,14 +69,8 @@ public class SwerveDrive extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
-
-        try {
-            layout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
-          } catch(IOException e) {
-            System.out.println("April Tag Field Layout not Found");
-          }
-          field = new Field2d();
-          SmartDashboard.putData("Field", field);
+        field = new Field2d();
+        SmartDashboard.putData("Field", field);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -91,15 +81,6 @@ public class SwerveDrive extends SubsystemBase {
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
     }
-
-    public void setModuleStates1(ChassisSpeeds chassisSpeeds){
-        SwerveModuleState[] desiredStates = Constants.SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.SwerveConstants.maxSpeed);
-    
-        for (SwerveModule mod : mSwerveMods) {
-          mod.setDesiredState(desiredStates[mod.moduleNumber], false);
-        }
-      }
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
