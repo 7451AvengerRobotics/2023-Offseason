@@ -1,6 +1,7 @@
 package frc.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.pathplanner.lib.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -167,6 +168,9 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
         public static final HashMap<String, Command> offseasonPath = new HashMap<>();
+
+        public static final PathConstraints constraintsToPath = new PathConstraints(kMaxAngularSpeedRadiansPerSecond, kMaxAccelerationMetersPerSecondSquared);
+
     }
     
     public static final class LimelightConstants{
