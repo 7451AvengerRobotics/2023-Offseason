@@ -166,7 +166,9 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-        public static final HashMap<String, Command> offseasonPath = new HashMap<>();
+        public static final HashMap<String, Command> offseasonPathBlueBump = new HashMap<>();
+        public static final HashMap<String, Command> offseasonPathBlue = new HashMap<>();
+        public static final HashMap<String, Command> testPath = new HashMap<>();
     }
     
     public static final class LimelightConstants{

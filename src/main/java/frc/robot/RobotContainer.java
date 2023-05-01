@@ -62,7 +62,9 @@ public class RobotContainer {
         chooser.setDefaultOption("Nothing", instantCmd);
         // chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
         chooser.addOption("Example Path", new exampleAuto(s_Swerve));
-        chooser.addOption("2nd Offseason Path test", new twoElementBumpSide(s_Swerve));
+        chooser.addOption("1st Offseason Path test", new twoElementBlueBumpSide(s_Swerve));
+        chooser.addOption("2nd Offseason Path test", new twoElementBlue(s_Swerve));
+        chooser.addOption("test path", new test(s_Swerve));
         autoMap.put(instantCmd, "nothing");
 
         // Configure the button bindings
