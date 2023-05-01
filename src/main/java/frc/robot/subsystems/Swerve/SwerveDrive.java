@@ -3,6 +3,10 @@ package frc.robot.subsystems.Swerve;
 import frc.lib.util.GamePiece;
 import frc.lib.util.GamePiece.GamePieceType;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.SwerveConstants.Mod0;
+import frc.robot.constants.Constants.SwerveConstants.Mod1;
+import frc.robot.constants.Constants.SwerveConstants.Mod2;
+import frc.robot.constants.Constants.SwerveConstants.Mod3;
 import frc.robot.vision.Limelight;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -37,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
-    private Field2d m_field = new Field2d();
+    private Field2d field;
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
@@ -46,7 +50,6 @@ public class SwerveDrive extends SubsystemBase {
 
 
     public SwerveDrive() {
-        SmartDashboard.putData("Field", m_field);
         gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
         gyro.configFactoryDefault();
         // limelight = new Limelight(this);
@@ -66,6 +69,8 @@ public class SwerveDrive extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
+        field = new Field2d();
+        SmartDashboard.putData("Field", field);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -75,7 +80,7 @@ public class SwerveDrive extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
-    }    
+    }
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
@@ -221,7 +226,7 @@ public class SwerveDrive extends SubsystemBase {
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  
-        m_field.setRobotPose(swerveOdometry.getPoseMeters());
+        field.setRobotPose(getPose());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
@@ -237,12 +242,12 @@ public class SwerveDrive extends SubsystemBase {
         Pose2d fieldRalativePos = getPose();
         
         if(DriverStation.getAlliance() == Alliance.Red)
-            m_field.setRobotPose(fieldRalativePos.relativeTo(Constants.FieldCoordinates.RedOrigin));
+            field.setRobotPose(fieldRalativePos.relativeTo(Constants.FieldCoordinates.RedOrigin));
 
         if(DriverStation.getAlliance() == Alliance.Blue)
-            m_field.setRobotPose(fieldRalativePos.relativeTo(Constants.FieldCoordinates.BlueOrigin));
+            field.setRobotPose(fieldRalativePos.relativeTo(Constants.FieldCoordinates.BlueOrigin));
 
-        SmartDashboard.putData("Field Swerve Odom", m_field);
+        SmartDashboard.putData("Field", field);
 
     }
 
@@ -291,5 +296,14 @@ public class SwerveDrive extends SubsystemBase {
         autoMap.put(auto, pathName);
         return auto;
     }
+
+    public void XLock(){
+        SwerveModuleState[] desiredStates = new SwerveModuleState[4];
+        desiredStates[0] = new SwerveModuleState(0, new Rotation2d(Mod0.angleOffset.getDegrees() + 45));
+        desiredStates[1] = new SwerveModuleState(0, new Rotation2d(Mod1.angleOffset.getDegrees() - 45));
+        desiredStates[2] = new SwerveModuleState(0, new Rotation2d(Mod2.angleOffset.getDegrees() - 45));
+        desiredStates[3] = new SwerveModuleState(0, new Rotation2d(Mod3.angleOffset.getDegrees() + 45));
+        setModuleStates(desiredStates);
+      }
 
 }
