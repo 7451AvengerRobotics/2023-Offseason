@@ -3,6 +3,8 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/AUTON/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Auton/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Field Swerve Odom": "Field2d"
     }

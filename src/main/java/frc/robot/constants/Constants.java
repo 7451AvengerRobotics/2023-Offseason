@@ -1,7 +1,6 @@
 package frc.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.pathplanner.lib.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -170,6 +169,7 @@ public final class Constants {
         public static final HashMap<String, Command> offseasonPathBlueBump = new HashMap<>();
         public static final HashMap<String, Command> offseasonPathBlue = new HashMap<>();
         public static final HashMap<String, Command> testPath = new HashMap<>();
+        public static final HashMap<String, Command> chargePath = new HashMap<>();
     }
     
     public static final class LimelightConstants{

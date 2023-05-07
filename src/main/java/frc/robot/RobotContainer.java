@@ -57,13 +57,14 @@ public class RobotContainer {
         );
 
 
-        Shuffleboard.getTab("AUTON").add(chooser).withSize(3, 1);
+        Shuffleboard.getTab("Auton").add(chooser).withSize(3, 1);
         Command instantCmd = new InstantCommand();
         chooser.setDefaultOption("Nothing", instantCmd);
         // chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
         chooser.addOption("Example Path", new exampleAuto(s_Swerve));
         chooser.addOption("1st Offseason Path test", new twoElementBlueBumpSide(s_Swerve));
         chooser.addOption("2nd Offseason Path test", new twoElementBlue(s_Swerve));
+        chooser.addOption("Balance Path", new ChargeAuto(s_Swerve));
         chooser.addOption("test path", new test(s_Swerve));
         autoMap.put(instantCmd, "nothing");
 
