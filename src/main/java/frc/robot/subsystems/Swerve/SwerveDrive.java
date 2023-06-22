@@ -51,16 +51,16 @@ public class SwerveDrive extends SubsystemBase {
 
 
     public SwerveDrive() {
-        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
+        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID, "7451CANivore");
         gyro.configFactoryDefault();
         // limelight = new Limelight(this);
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
-            new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
-            new SwerveModule(1, Constants.SwerveConstants.Mod1.constants),
-            new SwerveModule(2, Constants.SwerveConstants.Mod2.constants),
-            new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
+            new SwerveModule(0, Constants.SwerveConstants.Mod0.constants, true),
+            new SwerveModule(1, Constants.SwerveConstants.Mod1.constants, false),
+            new SwerveModule(2, Constants.SwerveConstants.Mod2.constants, true),
+            new SwerveModule(3, Constants.SwerveConstants.Mod3.constants, false)
         };
 
         /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
@@ -228,7 +228,7 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  
         field.setRobotPose(getPose());
-
+      SmartDashboard.putNumber("what", gyro.getPitch());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
