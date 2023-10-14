@@ -12,16 +12,11 @@ package frc.robot.constants;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class PortConstants {
-  public static final int[] LEFT_DRIVE = { 1, 4 };
-  public static final int[] RIGHT_DRIVE = { 2, 3 };
-
-  
+public final class PortConstants { 
   public static final int VirtualFourBar = 7;
-  public static final int[] Claw = {5, 12}; // need to change port numbers
+  public static final int Claw[] = {1, 10}; // need to change port numbers
   public static final int Gyro = 8;
   public static final int Turret = 6;
-  public static final int[] Arm = {0, 7, 6};
-  public static final int[] CLAW_PNEUMATIC = {1, 7};
-  //public static final int Claw = 13;
+  public static final int Arm = 9;
+  public static final int CLAW_PNEUMATIC = 3;
 }

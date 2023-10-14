@@ -8,6 +8,7 @@ package frc.robot.subsystems.other;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -20,7 +21,7 @@ public class Claw extends SubsystemBase{
 //push test
 
 //Creating Claw and properties of it 
-    private final DoubleSolenoid clawSolenoid;
+    private final Solenoid clawSolenoid;
     private final CANSparkMax clawMotorL;
     private final CANSparkMax clawMotorR;
     private static boolean isExtended;
@@ -30,9 +31,9 @@ public class Claw extends SubsystemBase{
         super();
 
  //Creating Claw and properties of it        
-        clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PortConstants.CLAW_PNEUMATIC[0], PortConstants.CLAW_PNEUMATIC[1]);
-        clawMotorL = new CANSparkMax(PortConstants.Claw[0], MotorType.kBrushless);
-        clawMotorR = new CANSparkMax(PortConstants.Claw[1], MotorType.kBrushless);
+        clawSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, PortConstants.CLAW_PNEUMATIC);
+        clawMotorL = new CANSparkMax(PortConstants.Claw[0], MotorType.kBrushed);
+        clawMotorR = new CANSparkMax(PortConstants.Claw[1], MotorType.kBrushed);
         
     }
 
@@ -40,13 +41,13 @@ public class Claw extends SubsystemBase{
    
 //Extending the Claw
     public void extend(){
-        clawSolenoid.set(Value.kForward);
+        clawSolenoid.set(true);
         isExtended = true;
     }
 
 //Retracting the Claw
     public void retract(){
-        clawSolenoid.set(Value.kReverse);
+        clawSolenoid.set(false);
         isExtended = false;
     }
 //Toggling the Claw
