@@ -23,7 +23,7 @@ public class EncoderandArm extends CommandBase{
     @Override 
     public void execute(){
         arm.extend();
-        bar.setPosition(power);
+        //bar.setPosition(power);
     }
     
     @Override

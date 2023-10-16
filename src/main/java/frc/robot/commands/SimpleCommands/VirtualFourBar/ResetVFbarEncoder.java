@@ -17,13 +17,13 @@ public class ResetVFbarEncoder extends CommandBase{
 
     @Override
     public void initialize(){
-        arm.lockSolenoid();
+        arm.unlockSolenoid();
     }
 
     @Override 
     public void execute(){
         arm.retract();
-        bar.setPosition(power);
+       // bar.setPosition(power);
     }
     
     @Override

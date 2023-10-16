@@ -29,14 +29,14 @@ public class VirtualFourBarCommand extends CommandBase{
     @Override
     public void end(boolean interrupted){
         bar.setPower(0);
-        arm.unlockSolenoid();
+        arm.lockSolenoid();
 
     }
 
     @Override
     public boolean isFinished(){
         arm.lockSolenoid();
-        return false;
+        return true;
     }
 }
 

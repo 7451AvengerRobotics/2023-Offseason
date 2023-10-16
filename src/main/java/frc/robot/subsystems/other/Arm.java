@@ -18,8 +18,8 @@ public class Arm extends SubsystemBase {
         super();
         // initializing compressor and solenoid
         compressor = new Compressor(0, PneumaticsModuleType.CTREPCM); 
-        armSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, PortConstants.Arm); // need to change module id
-        lockSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 5);
+        armSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0); // need to change module id
+        lockSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 6);
         // need to change module id
     }
 
@@ -43,20 +43,21 @@ public class Arm extends SubsystemBase {
         isExtended = false;
     }
 
-    public void toggle() {
-        if (isExtended) {
+    public void toggle(){
+        if(!isExtended){
             this.extend();
-        } else {
+        }else{
             this.retract();
+            System.out.println("ASODIJASOIDJ");
         }
     }
 
     public void unlockSolenoid() {
-        lockSolenoid.set(false);
+        lockSolenoid.set(true);
     }
 
     public void lockSolenoid() {
-        lockSolenoid.set(true);
+        lockSolenoid.set(false);
     }
 
     public boolean getArmState() {
