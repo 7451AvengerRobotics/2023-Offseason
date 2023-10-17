@@ -13,10 +13,9 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 public final class PortConstants { 
-  public static final int VirtualFourBar = 7;
-  public static final int Claw[] = {1, 10}; // need to change port numbers
+  public static final int VirtualFourBar = 22;
+  public static final int Claw[] = {20, 21}; // need to change port numbers
   public static final int Gyro = 8;
-  public static final int Turret = 6;
-  public static final int Arm = 9;
-  public static final int CLAW_PNEUMATIC = 3;
+  public static final int Arm = 0;
+  public static final int CLAW_PNEUMATIC = 7;
 }

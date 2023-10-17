@@ -3,9 +3,9 @@ package frc.robot.commands.SimpleCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.other.Arm;
 
-public class SolenoidExtendCommand extends CommandBase{
+public class SolenoidUnlock extends CommandBase{
     private final Arm arm;
-    public SolenoidExtendCommand(Arm arm){
+    public SolenoidUnlock(Arm arm){
         this.arm = arm;
         addRequirements(arm);
     }
@@ -16,7 +16,7 @@ public class SolenoidExtendCommand extends CommandBase{
 
     @Override 
     public void execute(){
-        arm.lockSolenoid();
+        arm.unlockSolenoid();
     }
     
     @Override

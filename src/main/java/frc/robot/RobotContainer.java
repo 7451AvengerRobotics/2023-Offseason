@@ -7,21 +7,20 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
-import frc.robot.commands.SimpleCommands.SolenoidCommand;
+import frc.robot.commands.SimpleCommands.SolenoidLock;
+import frc.robot.commands.SimpleCommands.SolenoidUnlock;
+import frc.robot.commands.SimpleCommands.ArmCommands.ArmExtendCommand;
+import frc.robot.commands.SimpleCommands.ArmCommands.ArmRetractCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ButtonConstants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
 import frc.robot.subsystems.other.Arm;
 import frc.robot.subsystems.other.Claw;
@@ -38,7 +37,7 @@ public class RobotContainer {
     /* Controllers */
     private final PS4Controller controller = new PS4Controller(Constants.ButtonConstants.CONTROLLER_PORT) ;
     private final Joystick buttonPanel = new Joystick(Constants.ButtonConstants.BUTTON_PANEL_PORT);
-    private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+    //private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
     /* Drive Controls */
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
@@ -63,19 +62,12 @@ public class RobotContainer {
         claw = new Claw();
         bar = new VirtualFourBar();
 
-
-    
-
-     
-
-
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -(controller.getRawAxis(translationAxis))*0.5, 
-                () -> -(controller.getRawAxis(strafeAxis))*0.5, 
-                () -> -(controller.getRawAxis(rotationAxis))*0.5, 
-                () -> robotCentric.getAsBoolean()
+                () -> -(controller.getRawAxis(translationAxis))*-0.8, 
+                () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
+                () -> -(controller.getRawAxis(rotationAxis))*-0.8
             )
         );
 
@@ -157,24 +149,25 @@ public class RobotContainer {
  
  
      /*    TestButton Mapping */
-     JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.clawToggle);
-     JoystickButton armToggle = new JoystickButton(buttonPanel, ButtonConstants.armToggle);
-     JoystickButton clawOut = new JoystickButton(buttonPanel, ButtonConstants.clawOut);
-     JoystickButton clawIn = new JoystickButton(buttonPanel, ButtonConstants.clawIn);
-     JoystickButton vfBarD = new JoystickButton(buttonPanel, ButtonConstants.vfbarDown);
-     JoystickButton vfBarUp = new JoystickButton(buttonPanel, ButtonConstants.vfbarUp);
-     JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 7);
+        JoystickButton armExtend = new JoystickButton(buttonPanel, 1);
+        JoystickButton armRetract = new JoystickButton(buttonPanel, 2);
+        JoystickButton armToggle = new JoystickButton(buttonPanel, 3);
+        JoystickButton clawToggle = new JoystickButton(buttonPanel, 4);
+        JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 5);
+        JoystickButton unlockSolenoid = new JoystickButton(buttonPanel, 6);
+        JoystickButton moveVFBAR = new JoystickButton(buttonPanel, 7);
+        JoystickButton reverseVFBAR = new JoystickButton(buttonPanel, 8);
      /* TestButton Mapping */
- 
- 
+        armExtend.onTrue(new ArmExtendCommand(arm));
+        armRetract.onTrue(new ArmRetractCommand(arm));
+        armToggle.onTrue(new ArmToggleCommand(arm));
+        clawToggle.onTrue(new ClawToggle(claw));
+        lockSolenoid.onTrue(new SolenoidLock(arm));
+        unlockSolenoid.onTrue(new SolenoidUnlock(arm));
+        moveVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.3));
+        reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, -0.3));
      /* Test Mapping */
-     clawToggle.onTrue(new ClawToggle(claw));
-     armToggle.onTrue(new ArmToggleCommand(arm));
-     clawOut.whileTrue(new ClawOuttake(claw, -1));
-     clawIn.whileTrue(new ClawIntake(claw, 1));
-     vfBarD.whileTrue(new VirtualFourBarCommand(bar, arm, 0.3));
-     vfBarUp.whileTrue(new VirtualFourBarCommand(bar, arm, -0.3));
-     lockSolenoid.onTrue(new SolenoidCommand(arm));
+
      /* Test Mapping */
  
      /* Command Mapping */
@@ -189,5 +182,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return chooser.getSelected();
+        //test to se if kunasl 
     }
 }

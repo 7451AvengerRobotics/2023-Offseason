@@ -23,7 +23,7 @@ public class StandardEncoder extends CommandBase{
     @Override 
     public void execute(){
 
-        bar.setPosition(power);
+       // bar.setPosition(power);
     }
     
     @Override

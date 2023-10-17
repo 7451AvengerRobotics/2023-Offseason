@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
-
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -16,16 +14,14 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
-    private BooleanSupplier robotCentricSup;
 
-    public TeleopSwerve(SwerveDrive s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
+    public TeleopSwerve(SwerveDrive s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
         this.translationSup = translationSup;
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
-        this.robotCentricSup = robotCentricSup;
     }
 
     @Override
@@ -39,7 +35,7 @@ public class TeleopSwerve extends CommandBase {
         s_Swerve.drive(
             new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed), 
             rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
-            !robotCentricSup.getAsBoolean(), 
+            true, 
             true
         );
     }
