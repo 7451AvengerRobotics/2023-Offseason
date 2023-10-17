@@ -18,6 +18,8 @@ import frc.robot.commands.SimpleCommands.SolenoidUnlock;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmExtendCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmRetractCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
+import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
+import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
@@ -149,23 +151,21 @@ public class RobotContainer {
  
  
      /*    TestButton Mapping */
-        JoystickButton armExtend = new JoystickButton(buttonPanel, 1);
-        JoystickButton armRetract = new JoystickButton(buttonPanel, 2);
-        JoystickButton armToggle = new JoystickButton(buttonPanel, 3);
+        JoystickButton armToggle = new JoystickButton(buttonPanel, 1);
+        JoystickButton upVFBAR = new JoystickButton(buttonPanel, 2);
+        JoystickButton reverseVFBAR = new JoystickButton(buttonPanel, 3);
         JoystickButton clawToggle = new JoystickButton(buttonPanel, 4);
-        JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 5);
-        JoystickButton unlockSolenoid = new JoystickButton(buttonPanel, 6);
-        JoystickButton moveVFBAR = new JoystickButton(buttonPanel, 7);
-        JoystickButton reverseVFBAR = new JoystickButton(buttonPanel, 8);
+        JoystickButton clawIntake = new JoystickButton(buttonPanel, 5);
+        JoystickButton clawOutake = new JoystickButton(buttonPanel, 6);
+        // JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 7);
+        // JoystickButton unlockSolenoid = new JoystickButton(buttonPanel, 8);
      /* TestButton Mapping */
-        armExtend.onTrue(new ArmExtendCommand(arm));
-        armRetract.onTrue(new ArmRetractCommand(arm));
         armToggle.onTrue(new ArmToggleCommand(arm));
         clawToggle.onTrue(new ClawToggle(claw));
-        lockSolenoid.onTrue(new SolenoidLock(arm));
-        unlockSolenoid.onTrue(new SolenoidUnlock(arm));
-        moveVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.3));
-        reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, -0.3));
+        upVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, -0.4));
+        reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.4));
+        clawIntake.whileTrue(new ClawIntake(claw, -0.7));
+        clawOutake.whileTrue(new ClawIntake(claw, 0.7));
      /* Test Mapping */
 
      /* Test Mapping */

@@ -36,7 +36,7 @@ public class TeleopSwerve extends CommandBase {
             new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed), 
             rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
             true, 
-            true
+            false
         );
     }
 }
