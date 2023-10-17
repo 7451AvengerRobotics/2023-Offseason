@@ -32,7 +32,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+//import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -224,6 +224,8 @@ public class SwerveDrive extends SubsystemBase {
     }
 
 
+
+
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  
@@ -255,6 +257,8 @@ public class SwerveDrive extends SubsystemBase {
 
     public SequentialCommandGroup followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
         PIDController thetaController = new PIDController(0.5, 0, 0);
+        PIDController xController = new PIDController(1.3, 0, 0);
+        PIDController yController = new PIDController(1.3,0,0);
 
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -262,6 +266,7 @@ public class SwerveDrive extends SubsystemBase {
         new InstantCommand(() -> {
           // Reset odometry for the first path you run during auto
           if(isFirstPath){
+              //PathPlannerTrajectory transformed = PathPlannerTrajectory.transformTrajectoryForAlliance(traj, DriverStation.getAlliance());
               this.resetOdometry(traj.getInitialHolonomicPose());
           }
         }),
@@ -269,8 +274,8 @@ public class SwerveDrive extends SubsystemBase {
             traj, 
             this::getPose, // Pose supplier
             Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
-            new PIDController(0, 0, 0),
-            new PIDController(0, 0, 0),
+            xController,
+            yController,
             thetaController, // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
             this::setModuleStates, // Module states consumer
             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true

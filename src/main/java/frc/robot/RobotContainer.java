@@ -7,26 +7,20 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
-import frc.robot.commands.SimpleCommands.SolenoidCommand;
 import frc.robot.commands.SimpleCommands.SolenoidLock;
 import frc.robot.commands.SimpleCommands.SolenoidUnlock;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmExtendCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmRetractCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawExtend;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ButtonConstants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
 import frc.robot.subsystems.other.Arm;
 import frc.robot.subsystems.other.Claw;
@@ -43,7 +37,7 @@ public class RobotContainer {
     /* Controllers */
     private final PS4Controller controller = new PS4Controller(Constants.ButtonConstants.CONTROLLER_PORT) ;
     private final Joystick buttonPanel = new Joystick(Constants.ButtonConstants.BUTTON_PANEL_PORT);
-    private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+    //private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
     /* Drive Controls */
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
@@ -68,19 +62,12 @@ public class RobotContainer {
         claw = new Claw();
         bar = new VirtualFourBar();
 
-
-    
-
-     
-
-
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
                 () -> -(controller.getRawAxis(translationAxis))*-0.8, 
                 () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
-                () -> -(controller.getRawAxis(rotationAxis))*-0.8, 
-                () -> !robotCentric.getAsBoolean()
+                () -> -(controller.getRawAxis(rotationAxis))*-0.8
             )
         );
 
