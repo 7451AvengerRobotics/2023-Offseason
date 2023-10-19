@@ -3,10 +3,9 @@ package frc.robot.subsystems.other;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import frc.robot.constants.PortConstants;
+
 
 public class Arm extends SubsystemBase {
     private static boolean isExtended = false;
