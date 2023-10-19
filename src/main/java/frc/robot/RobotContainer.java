@@ -13,13 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
-import frc.robot.commands.SimpleCommands.SolenoidLock;
-import frc.robot.commands.SimpleCommands.SolenoidUnlock;
-import frc.robot.commands.SimpleCommands.ArmCommands.ArmExtendCommand;
-import frc.robot.commands.SimpleCommands.ArmCommands.ArmRetractCommand;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
-import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
+
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
