@@ -1,5 +1,7 @@
 package frc.robot.constants;
 
+import java.util.HashMap;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -8,13 +10,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import frc.lib.util.COTSFalconSwerveConstants;
-import frc.lib.util.SwerveModuleConstants;
-import java.util.HashMap;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.lib.util.COTSFalconSwerveConstants;
+import frc.lib.util.Gains;
+import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final boolean tuningMode = false;
 
     public static final class FieldCoordinates {
 
@@ -149,6 +152,14 @@ public final class Constants {
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
+
+        public static final Gains GAINS_ANGLE_SNAP = new Gains(0.02, 0.0, 0.0, 0.0, 50);
+    
+        public static final Gains GAINS_BALANCE = new Gains(0.045, 0.0, 0.0, 0.0, 50);
+    
+        public static final double SNAP_TOLLERANCE = 2.0;
+        public static final double BALANCE_TOLLERANCE = 0.001;
+        
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot

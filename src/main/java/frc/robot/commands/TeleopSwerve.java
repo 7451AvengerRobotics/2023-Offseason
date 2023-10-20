@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import frc.robot.constants.Constants;
-import frc.robot.subsystems.Swerve.SwerveDrive;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.constants.Constants;
+import frc.robot.subsystems.Swerve.SwerveDrive;
 
 
 public class TeleopSwerve extends CommandBase {    
@@ -36,7 +36,7 @@ public class TeleopSwerve extends CommandBase {
             new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed), 
             rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
             true, 
-            true
+            false
         );
     }
 }

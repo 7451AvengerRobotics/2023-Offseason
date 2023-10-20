@@ -38,7 +38,12 @@ public class RobotContainer {
     private final PS4Controller controller = new PS4Controller(Constants.ButtonConstants.CONTROLLER_PORT) ;
     private final Joystick buttonPanel = new Joystick(Constants.ButtonConstants.BUTTON_PANEL_PORT);
     //private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+    private final JoystickButton away = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton right = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+    private final JoystickButton towards = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+    private final JoystickButton left = new JoystickButton(controller, PS4Controller.Button.kCross.value);
     /* Drive Controls */
+
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
@@ -68,6 +73,10 @@ public class RobotContainer {
                 () -> -(controller.getRawAxis(translationAxis))*-0.8, 
                 () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
                 () -> -(controller.getRawAxis(rotationAxis))*-0.8
+                // () -> away.getAsBoolean(), //face away
+                // () -> right.getAsBoolean(), // face right
+                // () -> towards.getAsBoolean(), //face towards
+                // () -> left.getAsBoolean() //face left
             )
         );
 

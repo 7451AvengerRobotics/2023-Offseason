@@ -1,18 +1,5 @@
 package frc.robot.subsystems.Swerve;
 
-import frc.lib.util.GamePiece;
-import frc.lib.util.GamePiece.GamePieceType;
-import frc.robot.constants.Constants;
-import frc.robot.constants.Constants.SwerveConstants.Mod0;
-import frc.robot.constants.Constants.SwerveConstants.Mod1;
-import frc.robot.constants.Constants.SwerveConstants.Mod2;
-import frc.robot.constants.Constants.SwerveConstants.Mod3;
-import frc.robot.vision.Limelight;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,15 +10,20 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.TimedRobot;
 //import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -40,9 +32,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.util.GamePiece;
+import frc.lib.util.GamePiece.GamePieceType;
+import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.SwerveConstants.Mod0;
+import frc.robot.constants.Constants.SwerveConstants.Mod1;
+import frc.robot.constants.Constants.SwerveConstants.Mod2;
+import frc.robot.constants.Constants.SwerveConstants.Mod3;
+import frc.robot.vision.Limelight;
 
 public class SwerveDrive extends SubsystemBase {
     private Field2d field;
+    private PIDController m_balancePID = new PIDController(
+        Constants.SwerveConstants.GAINS_BALANCE.kP, 
+        Constants.SwerveConstants.GAINS_BALANCE.kI, 
+        Constants.SwerveConstants.GAINS_BALANCE.kD);
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
@@ -255,6 +259,16 @@ public class SwerveDrive extends SubsystemBase {
 
     }
 
+    public void AutoBalance(){
+        m_balancePID.setTolerance(Constants.SwerveConstants.BALANCE_TOLLERANCE);
+        double pidOutput;
+        pidOutput = MathUtil.clamp(m_balancePID.calculate(getRoll(), 0), -1.0, 1.0);
+        if(Constants.tuningMode){
+            SmartDashboard.putNumber("Balance PID", pidOutput);
+        }
+            drive(new Translation2d(-pidOutput, 0), 0.0, false, true);
+    }
+
     public SequentialCommandGroup followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
         PIDController thetaController = new PIDController(0.5, 0, 0);
         PIDController xController = new PIDController(1.3, 0, 0);
@@ -290,8 +304,8 @@ public class SwerveDrive extends SubsystemBase {
             this::getPose, // Pose2d supplier
             this::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
             Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
-            new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-            new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+            new PIDConstants(3.25, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+            new PIDConstants(3.15, 0.0, 0.5), // PID constants to correct for rotation error (used to create the rotation controller)
             this::setModuleStates, // Module states consumer used to output to the drive subsystem
             eventMap,
             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
