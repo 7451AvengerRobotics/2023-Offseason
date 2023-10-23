@@ -46,8 +46,6 @@ public class RobotContainer {
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
-    //TODO: Auto Allign will throw an error at the moment if we use it because we cannot determine game piece. We can use controller feedback or we can use other sensors,
-
     /* Subsystems */
     private final SwerveDrive s_Swerve = new SwerveDrive();  
     private final Arm arm;
@@ -117,14 +115,7 @@ public class RobotContainer {
     //  JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
     //  JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
  
-    //  JoystickButton turretRight = new JoystickButton(buttonPanel, ButtonConstants.TurretLeft);
-    //  JoystickButton turretLeft = new JoystickButton(buttonPanel, ButtonConstants.TurretRight);
- 
     //  JoystickButton lockSolenoid = new JoystickButton(buttonPanel, ButtonConstants.lockSolenoid);
- 
-     /* Actual Buttons */
- 
- 
  
  
      /*Actual Command Mapping */
@@ -147,13 +138,6 @@ public class RobotContainer {
     //  turretRight.whileTrue(new TurretTestCommand(turret, 0.3));
     //  turretLeft.whileTrue(new TurretTestCommand(turret, -0.3));
      /*Actual Command Mapping */
-    //testing to see keshav can access git jb jjhbh
- 
- 
- 
- 
- 
- 
  
      /*    TestButton Mapping */
         JoystickButton armToggle = new JoystickButton(buttonPanel, 1);
@@ -162,8 +146,7 @@ public class RobotContainer {
         JoystickButton clawToggle = new JoystickButton(buttonPanel, 4);
         JoystickButton clawIntake = new JoystickButton(buttonPanel, 5);
         JoystickButton clawOutake = new JoystickButton(buttonPanel, 6);
-        // JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 7);
-        // JoystickButton unlockSolenoid = new JoystickButton(buttonPanel, 8);
+
      /* TestButton Mapping */
         armToggle.onTrue(new ArmToggleCommand(arm));
         clawToggle.onTrue(new ClawToggle(claw));
@@ -171,11 +154,6 @@ public class RobotContainer {
         reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.4));
         clawIntake.whileTrue(new ClawIntake(claw, -0.7));
         clawOutake.whileTrue(new ClawIntake(claw, 0.7));
-     /* Test Mapping */
-
-     /* Test Mapping */
- 
-     /* Command Mapping */
  
    }
 
@@ -187,6 +165,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return chooser.getSelected();
-        //test to se if kunasl 
     }
 }
