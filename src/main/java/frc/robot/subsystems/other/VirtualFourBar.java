@@ -1,22 +1,19 @@
 package frc.robot.subsystems.other;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.PortConstants;
-import frc.robot.constants.TurretConstants;
 
 public class VirtualFourBar extends SubsystemBase {
 
     private final CANSparkMax vFBAR;
     private final RelativeEncoder encoder;
+    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+    private SparkMaxPIDController m_pidController;
 
     public VirtualFourBar(){
         
@@ -24,20 +21,38 @@ public class VirtualFourBar extends SubsystemBase {
         vFBAR = new CANSparkMax(22, MotorType.kBrushless);
         encoder = vFBAR.getEncoder();
 
+        m_pidController = vFBAR.getPIDController();
+
+        vFBAR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        vFBAR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    
+        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, (float) 42.54);
+        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) -1.83);
+
+        kP = 0.03; 
+        kI = 0;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0; 
+        kMaxOutput = 0.5; 
+        kMinOutput = -0.5;
+
+        m_pidController.setP(kP);
+        m_pidController.setI(kI);
+        m_pidController.setD(kD);
+        m_pidController.setIZone(kIz);
+        m_pidController.setFF(kFF);
+        m_pidController.setOutputRange(kMinOutput, kMaxOutput);
+
+
     }
-
-
-//Function allows user to set falcon power based on percentage
-
-
-
 
     public double getEncoderPosition(){
         return encoder.getPosition();
     }
 
     public void setPosition(double position){
-        encoder.setPosition(position);
+        m_pidController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
 
@@ -49,8 +64,6 @@ public class VirtualFourBar extends SubsystemBase {
     public void periodic(){
         SmartDashboard.putNumber("EncoderPosition", encoder.getPosition());
     }
-
-//Function allows user to reset the encoder position
   
 
 }

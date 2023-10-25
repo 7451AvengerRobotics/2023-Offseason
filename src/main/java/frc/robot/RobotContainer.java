@@ -15,10 +15,14 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
-
+import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderVFBAR;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderandArm;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.ResetVFbarEncoder;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.ButtonConstants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
 import frc.robot.subsystems.other.Arm;
 import frc.robot.subsystems.other.Claw;
@@ -36,10 +40,6 @@ public class RobotContainer {
     private final PS4Controller controller = new PS4Controller(Constants.ButtonConstants.CONTROLLER_PORT) ;
     private final Joystick buttonPanel = new Joystick(Constants.ButtonConstants.BUTTON_PANEL_PORT);
     //private final JoystickButton robotCentric = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-    private final JoystickButton away = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton right = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-    private final JoystickButton towards = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-    private final JoystickButton left = new JoystickButton(controller, PS4Controller.Button.kCross.value);
     /* Drive Controls */
 
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
@@ -109,76 +109,34 @@ public class RobotContainer {
  
      /* Actual Buttons */
  
-    //  JoystickButton midCone = new JoystickButton(buttonPanel, ButtonConstants.MidCone);
-    //  JoystickButton midCube = new JoystickButton(buttonPanel, ButtonConstants.MidCube);
+     JoystickButton midCone = new JoystickButton(buttonPanel, ButtonConstants.MidCone);
+     JoystickButton midCube = new JoystickButton(buttonPanel, ButtonConstants.MidCube);
  
-    //  JoystickButton highCube = new JoystickButton(buttonPanel, ButtonConstants.HighCube);
-    //  JoystickButton grabObject = new JoystickButton(buttonPanel, ButtonConstants.Ground);
-    //  JoystickButton resetBar = new JoystickButton(buttonPanel, ButtonConstants.ResetEncoder);
+     JoystickButton highCube = new JoystickButton(buttonPanel, ButtonConstants.HighCube);
+     JoystickButton grabObject = new JoystickButton(buttonPanel, ButtonConstants.Ground);
+     JoystickButton resetBar = new JoystickButton(buttonPanel, ButtonConstants.ResetEncoder);
  
-    //  JoystickButton clawIntake = new JoystickButton(buttonPanel, ButtonConstants.ClawIntake);
-    //  JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
-    //  JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
- 
-    //  JoystickButton turretRight = new JoystickButton(buttonPanel, ButtonConstants.TurretLeft);
-    //  JoystickButton turretLeft = new JoystickButton(buttonPanel, ButtonConstants.TurretRight);
- 
-    //  JoystickButton lockSolenoid = new JoystickButton(buttonPanel, ButtonConstants.lockSolenoid);
- 
-     /* Actual Buttons */
- 
- 
+     JoystickButton clawIntake = new JoystickButton(buttonPanel, ButtonConstants.ClawIntake);
+     JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
+     JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
  
  
      /*Actual Command Mapping */
-    // midCone.onTrue(new EncoderandArm(bar, arm, 62464)); // 5
-    // midCube.onTrue(new StandardEncoder(bar, arm, 9732)); // 6
+    midCone.onTrue(new EncoderandArm(bar, arm, 31.213912)); // 5
+    midCube.onTrue(new EncoderVFBAR(bar, arm, 9.5)); // 6
  
  
-    //  highCube.onTrue(new EncoderandArm(bar, arm, 30786)); // 2
-    //  grabObject.onTrue(new StandardEncoder(bar, arm, 69977)); // 1
-    //  resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 0)); // 11
+     highCube.onTrue(new EncoderandArm(bar, arm, 19.2142)); // 2
+     grabObject.onTrue(new EncoderVFBAR(bar, arm, 34.595)); // 1
+     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 1.88095)); // 11
  
  
-    //  clawIntake.whileTrue(new ClawIntake(claw, 1)); // 3
-    //  clawOuttake.whileTrue(new ClawOuttake(claw, -1)); // 4
-    //  clawToggle.whileTrue(new ClawToggle(claw)); // 8
- 
-    //  lockSolenoid.onTrue(new SolenoidCommand(arm)); // 7
- 
- 
-    //  turretRight.whileTrue(new TurretTestCommand(turret, 0.3));
-    //  turretLeft.whileTrue(new TurretTestCommand(turret, -0.3));
+     clawIntake.whileTrue(new ClawIntake(claw, -1)); // 3
+     clawOuttake.whileTrue(new ClawOuttake(claw, 1)); // 4
+     clawToggle.whileTrue(new ClawToggle(claw)); // 
      /*Actual Command Mapping */
-    //testing to see keshav can access git jb jjhbh
  
- 
- 
- 
- 
- 
- 
-     /*    TestButton Mapping */
-        JoystickButton armToggle = new JoystickButton(buttonPanel, 1);
-        JoystickButton upVFBAR = new JoystickButton(buttonPanel, 2);
-        JoystickButton reverseVFBAR = new JoystickButton(buttonPanel, 3);
-        JoystickButton clawToggle = new JoystickButton(buttonPanel, 4);
-        JoystickButton clawIntake = new JoystickButton(buttonPanel, 5);
-        JoystickButton clawOutake = new JoystickButton(buttonPanel, 6);
-        // JoystickButton lockSolenoid = new JoystickButton(buttonPanel, 7);
-        // JoystickButton unlockSolenoid = new JoystickButton(buttonPanel, 8);
-     /* TestButton Mapping */
-        armToggle.onTrue(new ArmToggleCommand(arm));
-        clawToggle.onTrue(new ClawToggle(claw));
-        upVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, -0.4));
-        reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.4));
-        clawIntake.whileTrue(new ClawIntake(claw, -0.7));
-        clawOutake.whileTrue(new ClawIntake(claw, 0.7));
-     /* Test Mapping */
 
-     /* Test Mapping */
- 
-     /* Command Mapping */
  
    }
 
@@ -190,6 +148,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return chooser.getSelected();
-        //test to se if kunasl 
     }
 }
