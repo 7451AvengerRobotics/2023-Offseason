@@ -44,7 +44,7 @@ public class RobotContainer {
 
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
     private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
-    private final int rotationAxis = PS4Controller.Axis.kRightX.value;
+    private final int rotationAxis = PS4Controller.Axis.kRightX.value; 
 
     //TODO: Auto Allign will throw an error at the moment if we use it because we cannot determine game piece. We can use controller feedback or we can use other sensors,
 
@@ -65,12 +65,15 @@ public class RobotContainer {
         claw = new Claw();
         bar = new VirtualFourBar();
 
+
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
                 () -> -(controller.getRawAxis(translationAxis))*-0.8, 
                 () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
-                () -> -(controller.getRawAxis(rotationAxis))*-0.8
+                () -> -(controller.getRawAxis(rotationAxis))*-0.8,
+                controller::getR2Button,
+                controller::getL2Button
                 // () -> away.getAsBoolean(), //face away
                 // () -> right.getAsBoolean(), // face right
                 // () -> towards.getAsBoolean(), //face towards
