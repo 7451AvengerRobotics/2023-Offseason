@@ -15,10 +15,14 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.SimpleCommands.ArmCommands.ArmToggleCommand;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawIntake;
-
+import frc.robot.commands.SimpleCommands.ClawCommands.ClawOuttake;
 import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderVFBAR;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderandArm;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.ResetVFbarEncoder;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.ButtonConstants;
 import frc.robot.subsystems.Swerve.SwerveDrive;
 import frc.robot.subsystems.other.Arm;
 import frc.robot.subsystems.other.Claw;
@@ -66,13 +70,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -(controller.getRawAxis(translationAxis))*-0.8, 
-                () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
-                () -> -(controller.getRawAxis(rotationAxis))*-0.8
-                // () -> away.getAsBoolean(), //face away
-                // () -> right.getAsBoolean(), // face right
-                // () -> towards.getAsBoolean(), //face towards
-                // () -> left.getAsBoolean() //face left
+                () -> -(controller.getRawAxis(translationAxis))*-1, 
+                () -> -(controller.getRawAxis(strafeAxis))*-1, 
+                () -> -(controller.getRawAxis(rotationAxis))*-1
             )
         );
 
@@ -104,56 +104,34 @@ public class RobotContainer {
  
      /* Actual Buttons */
  
-    //  JoystickButton midCone = new JoystickButton(buttonPanel, ButtonConstants.MidCone);
-    //  JoystickButton midCube = new JoystickButton(buttonPanel, ButtonConstants.MidCube);
+     JoystickButton midCone = new JoystickButton(buttonPanel, ButtonConstants.MidCone);
+     JoystickButton midCube = new JoystickButton(buttonPanel, ButtonConstants.MidCube);
  
-    //  JoystickButton highCube = new JoystickButton(buttonPanel, ButtonConstants.HighCube);
-    //  JoystickButton grabObject = new JoystickButton(buttonPanel, ButtonConstants.Ground);
-    //  JoystickButton resetBar = new JoystickButton(buttonPanel, ButtonConstants.ResetEncoder);
+     JoystickButton highCube = new JoystickButton(buttonPanel, ButtonConstants.HighCube);
+     JoystickButton grabObject = new JoystickButton(buttonPanel, ButtonConstants.Ground);
+     JoystickButton resetBar = new JoystickButton(buttonPanel, ButtonConstants.ResetEncoder);
  
-    //  JoystickButton clawIntake = new JoystickButton(buttonPanel, ButtonConstants.ClawIntake);
-    //  JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
-    //  JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
- 
-    //  JoystickButton lockSolenoid = new JoystickButton(buttonPanel, ButtonConstants.lockSolenoid);
+     JoystickButton clawIntake = new JoystickButton(buttonPanel, ButtonConstants.ClawIntake);
+     JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
+     JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
  
  
      /*Actual Command Mapping */
-    // midCone.onTrue(new EncoderandArm(bar, arm, 62464)); // 5
-    // midCube.onTrue(new StandardEncoder(bar, arm, 9732)); // 6
+    midCone.onTrue(new EncoderandArm(bar, arm, 31.213912)); // 5
+    midCube.onTrue(new EncoderVFBAR(bar, arm, 9.5)); // 6
  
  
-    //  highCube.onTrue(new EncoderandArm(bar, arm, 30786)); // 2
-    //  grabObject.onTrue(new StandardEncoder(bar, arm, 69977)); // 1
-    //  resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 0)); // 11
+     highCube.onTrue(new EncoderandArm(bar, arm, 19.2142)); // 2
+     grabObject.onTrue(new EncoderVFBAR(bar, arm, 34.595)); // 1
+     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 1.88095)); // 11
  
  
-    //  clawIntake.whileTrue(new ClawIntake(claw, 1)); // 3
-    //  clawOuttake.whileTrue(new ClawOuttake(claw, -1)); // 4
-    //  clawToggle.whileTrue(new ClawToggle(claw)); // 8
- 
-    //  lockSolenoid.onTrue(new SolenoidCommand(arm)); // 7
- 
- 
-    //  turretRight.whileTrue(new TurretTestCommand(turret, 0.3));
-    //  turretLeft.whileTrue(new TurretTestCommand(turret, -0.3));
+     clawIntake.whileTrue(new ClawIntake(claw, -1)); // 3
+     clawOuttake.whileTrue(new ClawOuttake(claw, 1)); // 4
+     clawToggle.whileTrue(new ClawToggle(claw)); // 
      /*Actual Command Mapping */
  
-     /*    TestButton Mapping */
-        JoystickButton armToggle = new JoystickButton(buttonPanel, 1);
-        JoystickButton upVFBAR = new JoystickButton(buttonPanel, 2);
-        JoystickButton reverseVFBAR = new JoystickButton(buttonPanel, 3);
-        JoystickButton clawToggle = new JoystickButton(buttonPanel, 4);
-        JoystickButton clawIntake = new JoystickButton(buttonPanel, 5);
-        JoystickButton clawOutake = new JoystickButton(buttonPanel, 6);
 
-     /* TestButton Mapping */
-        armToggle.onTrue(new ArmToggleCommand(arm));
-        clawToggle.onTrue(new ClawToggle(claw));
-        upVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, -0.4));
-        reverseVFBAR.whileTrue(new VirtualFourBarCommand(bar, arm, 0.4));
-        clawIntake.whileTrue(new ClawIntake(claw, -0.7));
-        clawOutake.whileTrue(new ClawIntake(claw, 0.7));
  
    }
 

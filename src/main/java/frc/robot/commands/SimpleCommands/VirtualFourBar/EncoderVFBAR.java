@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.other.Arm;
 import frc.robot.subsystems.other.VirtualFourBar;
 
-public class ResetVFbarEncoder extends CommandBase{
+public class EncoderVFBAR extends CommandBase{
     private final VirtualFourBar bar;
     private final Arm arm;
     private final double power;
-    public ResetVFbarEncoder(VirtualFourBar bar, Arm arm, double power){
+    public EncoderVFBAR(VirtualFourBar bar, Arm arm, double power){
         this.bar = bar;
         this.power = power;
         this.arm = arm;
@@ -22,7 +22,6 @@ public class ResetVFbarEncoder extends CommandBase{
 
     @Override 
     public void execute(){
-        arm.retract();
         bar.setPosition(power);
     }
     

@@ -17,13 +17,13 @@ public class EncoderandArm extends CommandBase{
 
     @Override
     public void initialize(){
-        arm.lockSolenoid();
+        arm.unlockSolenoid();
     }
 
     @Override 
     public void execute(){
         arm.extend();
-        //bar.setPosition(power);
+        bar.setPosition(power);
     }
     
     @Override

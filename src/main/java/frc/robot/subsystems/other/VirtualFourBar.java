@@ -23,13 +23,19 @@ public class VirtualFourBar extends SubsystemBase {
 
         m_pidController = vFBAR.getPIDController();
 
-        kP = 0.1; 
-        kI = 1e-4;
-        kD = 1; 
+        vFBAR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        vFBAR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    
+        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, (float) 42.54);
+        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) -1.83);
+
+        kP = 0.03; 
+        kI = 0;
+        kD = 0; 
         kIz = 0; 
         kFF = 0; 
-        kMaxOutput = 1; 
-        kMinOutput = -1;
+        kMaxOutput = 0.5; 
+        kMinOutput = -0.5;
 
         m_pidController.setP(kP);
         m_pidController.setI(kI);
