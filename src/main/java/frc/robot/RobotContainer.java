@@ -69,11 +69,11 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -(controller.getRawAxis(translationAxis))*-0.8, 
-                () -> -(controller.getRawAxis(strafeAxis))*-0.8, 
-                () -> -(controller.getRawAxis(rotationAxis))*-0.8,
-                controller::getR2Button,
-                controller::getL2Button
+                () -> -(controller.getRawAxis(translationAxis))*1, 
+                () -> -(controller.getRawAxis(strafeAxis))*1, 
+                () -> -(controller.getRawAxis(rotationAxis))*-1,
+                controller::getL2Button,
+                controller::getR2Button
                 // () -> away.getAsBoolean(), //face away
                 // () -> right.getAsBoolean(), // face right
                 // () -> towards.getAsBoolean(), //face towards
@@ -86,7 +86,7 @@ public class RobotContainer {
         Command instantCmd = new InstantCommand();
         chooser.setDefaultOption("Nothing", instantCmd);
         // chooser.addOption("Offseason Path", sAutoBuilder("Offseason Path", AutoConstants.offseasonPath));
-        chooser.addOption("Example Path", new exampleAuto(s_Swerve));
+        chooser.addOption("Example Path", new exampleAuto(s_Swerve, arm, bar, claw));
         chooser.addOption("1st Offseason Path test", new twoElementBlueBumpSide(s_Swerve));
         chooser.addOption("2nd Offseason Path test", new twoElementBlue(s_Swerve));
         chooser.addOption("Balance Path", new ChargeAuto(s_Swerve));
@@ -111,7 +111,7 @@ public class RobotContainer {
  
      JoystickButton midCone = new JoystickButton(buttonPanel, ButtonConstants.MidCone);
      JoystickButton midCube = new JoystickButton(buttonPanel, ButtonConstants.MidCube);
- 
+     JoystickButton highCone = new JoystickButton(buttonPanel, 7);  
      JoystickButton highCube = new JoystickButton(buttonPanel, ButtonConstants.HighCube);
      JoystickButton grabObject = new JoystickButton(buttonPanel, ButtonConstants.Ground);
      JoystickButton resetBar = new JoystickButton(buttonPanel, ButtonConstants.ResetEncoder);
@@ -122,13 +122,13 @@ public class RobotContainer {
  
  
      /*Actual Command Mapping */
-    midCone.onTrue(new EncoderandArm(bar, arm, 31.213912)); // 5
+    midCone.onTrue(new EncoderandArm(bar, arm, 29.813912)); // 5
     midCube.onTrue(new EncoderVFBAR(bar, arm, 9.5)); // 6
  
- 
-     highCube.onTrue(new EncoderandArm(bar, arm, 19.2142)); // 2
-     grabObject.onTrue(new EncoderVFBAR(bar, arm, 34.595)); // 1
-     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 1.88095)); // 11
+     highCone.onTrue(new EncoderandArm(bar, arm, 22));
+     highCube.onTrue(new EncoderandArm(bar, arm, 19.9142)); // 2
+     grabObject.onTrue(new EncoderVFBAR(bar, arm, 40)); // 1
+     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, -1.88095)); // 11
  
  
      clawIntake.whileTrue(new ClawIntake(claw, -1)); // 3

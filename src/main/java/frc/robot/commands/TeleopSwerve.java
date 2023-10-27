@@ -45,6 +45,12 @@ public class TeleopSwerve extends CommandBase {
             // }
             rotationVal = rotationVal *0.25;
         }
+        else if (m_halfSpeed.getAsBoolean() && m_quarterSpeed.getAsBoolean()){
+            strafeVal = strafeVal*0.3;
+            translationVal =translationVal*0.3;
+            rotationVal = rotationVal *0.25;
+
+        }
         else if(m_halfSpeed.getAsBoolean()){
             strafeVal = strafeVal*0.3;
             translationVal =translationVal*0.3;
