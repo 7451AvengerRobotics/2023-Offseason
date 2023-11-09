@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -54,11 +55,15 @@ public class SwerveDrive extends SubsystemBase {
     public static HashMap<Command, String> autoMap = new HashMap<>();
 
 
+
     public SwerveDrive() {
         gyro = new Pigeon2(Constants.SwerveConstants.pigeonID, "7451CANivore");
         gyro.configFactoryDefault();
         // limelight = new Limelight(this);
         zeroGyro();
+
+        var thetaController = new ProfiledPIDController(1.5, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.SwerveConstants.Mod0.constants, true),
@@ -234,7 +239,7 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  
         field.setRobotPose(getPose());
-      SmartDashboard.putNumber("what", gyro.getPitch());
+      SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
@@ -301,11 +306,11 @@ public class SwerveDrive extends SubsystemBase {
 
      public Command sAutoBuilder(String pathName, HashMap<String, Command> eventMap) {
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-            this::getPose, // Pose2d supplier
+            this::getPose, // Pose2d supplier 
             this::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
             Constants.SwerveConstants.swerveKinematics, // SwerveDriveKinematics
-            new PIDConstants(3.25, 0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-            new PIDConstants(1, 0.0, 0), // PID constants to correct for rotation error (used to create the rotation controller)
+            new PIDConstants(1.8, 0.05, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+            new PIDConstants(0.1, 0, 0), // PID constants to correct for rotation error (used to create the rotation controller)
             this::setModuleStates, // Module states consumer used to output to the drive subsystem
             eventMap,
             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true

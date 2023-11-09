@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,6 +21,7 @@ import frc.robot.commands.SimpleCommands.ClawCommands.ClawToggle;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderVFBAR;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.EncoderandArm;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.ResetVFbarEncoder;
+import frc.robot.commands.SimpleCommands.VirtualFourBar.StandardEncoder;
 import frc.robot.commands.SimpleCommands.VirtualFourBar.VirtualFourBarCommand;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.ButtonConstants;
@@ -73,13 +75,11 @@ public class RobotContainer {
                 () -> -(controller.getRawAxis(strafeAxis))*1, 
                 () -> -(controller.getRawAxis(rotationAxis))*-1,
                 controller::getL2Button,
-                controller::getR2Button
-                // () -> away.getAsBoolean(), //face away
-                // () -> right.getAsBoolean(), // face right
-                // () -> towards.getAsBoolean(), //face towards
-                // () -> left.getAsBoolean() //face left
+                controller::getR2Button,
+                controller::getR1Button
             )
         );
+
 
 
         Shuffleboard.getTab("Auton").add(chooser).withSize(3, 1);
@@ -119,26 +119,32 @@ public class RobotContainer {
      JoystickButton clawIntake = new JoystickButton(buttonPanel, ButtonConstants.ClawIntake);
      JoystickButton clawOuttake = new JoystickButton(buttonPanel, ButtonConstants.ClawOuttake);
      JoystickButton clawToggle = new JoystickButton(buttonPanel, ButtonConstants.CLAW_TOGGLE);
+     JoystickButton moveDown = new JoystickButton(buttonPanel, 10);
  
  
      /*Actual Command Mapping */
     midCone.onTrue(new EncoderandArm(bar, arm, 29.813912)); // 5
     midCube.onTrue(new EncoderVFBAR(bar, arm, 9.5)); // 6
- 
-     highCone.onTrue(new EncoderandArm(bar, arm, 22));
-     highCube.onTrue(new EncoderandArm(bar, arm, 19.9142)); // 2
-     grabObject.onTrue(new EncoderVFBAR(bar, arm, 40)); // 1
-     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, -1.88095)); // 11
+        
+    highCone.onTrue(new EncoderandArm(bar, arm, 23));
+    highCube.onTrue(new EncoderandArm(bar, arm, 15)); // 2
+  grabObject.onTrue(new EncoderVFBAR(bar, arm, 40)); // 1
+   // grabObject.whileTrue(new StandardEncoder(bar, arm, 0.3));
+    //highCube.whileTrue(new StandardEncoder(bar, arm, -0.3));
+    moveDown.whileTrue(new StandardEncoder(bar, arm, 0.3));
+     resetBar.onTrue(new ResetVFbarEncoder(bar, arm, 0)); // 11
  
  
      clawIntake.whileTrue(new ClawIntake(claw, -1)); // 3
      clawOuttake.whileTrue(new ClawOuttake(claw, 1)); // 4
-     clawToggle.whileTrue(new ClawToggle(claw)); // 
+     clawToggle.whileTrue(new ClawToggle(claw)); 
+
      /*Actual Command Mapping */
  
 
  
    }
+  
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

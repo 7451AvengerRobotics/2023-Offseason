@@ -34,6 +34,7 @@ public class Claw extends SubsystemBase{
         clawSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, PortConstants.CLAW_PNEUMATIC);
         clawMotorL = new CANSparkMax(PortConstants.Claw[0], MotorType.kBrushed);
         clawMotorR = new CANSparkMax(PortConstants.Claw[1], MotorType.kBrushed);
+
         
     }
 

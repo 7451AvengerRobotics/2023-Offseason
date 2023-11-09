@@ -27,7 +27,8 @@ public class VirtualFourBar extends SubsystemBase {
         vFBAR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
     
         vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, (float) 42.54);
-        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) -1.83);
+        vFBAR.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) -1.4);
+        
 
         kP = 0.03; 
         kI = 0;

@@ -17,17 +17,19 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier rotationSup;
     private BooleanSupplier m_halfSpeed;
     private BooleanSupplier m_quarterSpeed;
+    private BooleanSupplier bothSpeed;
 
     public TeleopSwerve(SwerveDrive s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, 
-                        BooleanSupplier halfSpeed, BooleanSupplier quarterSpeed) {
+                        BooleanSupplier halfSpeed, BooleanSupplier quarterSpeed, BooleanSupplier bothSpeed) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
         this.translationSup = translationSup;
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
-        m_halfSpeed = halfSpeed;
-        m_quarterSpeed = quarterSpeed;
+        this.m_halfSpeed = halfSpeed;
+        this.m_quarterSpeed = quarterSpeed;
+        this.bothSpeed = bothSpeed;
     }
 
     @Override
@@ -45,15 +47,15 @@ public class TeleopSwerve extends CommandBase {
             // }
             rotationVal = rotationVal *0.25;
         }
-        else if (m_halfSpeed.getAsBoolean() && m_quarterSpeed.getAsBoolean()){
-            strafeVal = strafeVal*0.3;
-            translationVal =translationVal*0.3;
-            rotationVal = rotationVal *0.25;
+        else if (bothSpeed.getAsBoolean()){
+            strafeVal = strafeVal*0.36;
+            translationVal =translationVal*0.36;
+            rotationVal = rotationVal *0.26;
 
         }
         else if(m_halfSpeed.getAsBoolean()){
-            strafeVal = strafeVal*0.3;
-            translationVal =translationVal*0.3;
+            strafeVal = strafeVal*0.4;
+            translationVal =translationVal*0.4;
         }
         else{
             strafeVal = strafeVal*1.0;
@@ -66,7 +68,7 @@ public class TeleopSwerve extends CommandBase {
             new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed), 
             rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
             true, 
-            false
+            true
         );
     }
 }

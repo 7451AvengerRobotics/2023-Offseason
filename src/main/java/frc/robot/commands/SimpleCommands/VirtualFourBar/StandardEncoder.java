@@ -17,13 +17,13 @@ public class StandardEncoder extends CommandBase{
 
     @Override
     public void initialize(){
-        arm.lockSolenoid();
+        arm.unlockSolenoid();
     }
 
     @Override 
     public void execute(){
 
-       // bar.setPosition(power);
+       bar.setPower(power);
     }
     
     @Override
